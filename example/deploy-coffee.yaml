@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coffee
+  template:
+    metadata:
+      labels:
+        app: coffee
+    spec:
+      volumes:
+      - name: site
+        emptyDir: {}
+      initContainers:
+      - name: web-content
+        image: busybox
+        volumeMounts:
+        - name: site
+          mountPath: "/site"
+        command: ["/bin/sh", "-c", 'echo "<h1>Esta pagina esta rodando no container coffee</h1>" > /site/index.html']
+      containers:
+      - image: nginxdemos/nginx-hello:plain-text
+        name: coffee
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: site
+          mountPath: "/usr/share/nginx/html"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coffee-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: coffee
