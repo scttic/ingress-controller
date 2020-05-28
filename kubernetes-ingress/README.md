@@ -4,7 +4,7 @@ Para o Ingress Controller NGINX, use a imagem nginx/nginx-ingress do DockerHub.
 Clone o repositório do Ingress Controller e mude para a pasta de implantações:
 
 ```bash
-$ git clone https://github.com/nginxinc/ingress-controller/
+$ git clone https://github.com/scttic/ingress-controller.git
 $ cd ingress-controller/kubernetes-ingress
 ```
 
